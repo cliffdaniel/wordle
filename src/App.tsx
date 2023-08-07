@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 import Header from './components/Header';
 import Board from './features/game/presentation/Board/Board'
 import Keyboard from './features/game/presentation/Board/Keyboard'
