@@ -51,7 +51,6 @@ const GameResult: React.FC<GameResultProps> = ({ onClose }) => {
         const timeLeft = GAME_INTERVAL - elapsedTime;
 
         if (timeLeft <= 0) {
-          console.log('llega')
           dispatch(setGameOver(false));
           dispatch(takeWord(false));
           clearInterval(intervalId);

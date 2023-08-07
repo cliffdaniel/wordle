@@ -108,7 +108,6 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const initializeGame = async () => {
-    console.log('initializeGame')
     if (!gameOver && !taken) {
       const randomWord = await getRandomFiveLetterWord();
       dispatch(addWord(randomWord));
