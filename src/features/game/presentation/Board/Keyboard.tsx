@@ -18,6 +18,7 @@ const Keyboard: React.FC = () => {
 
   const backgroundKey = theme === 'light' ? 'bg-key-light' : 'bg-key-dark';
   const colorKey = theme === 'light' ? 'text-key-light' : 'text-key-dark';
+  const svgKey = theme === 'light' ? 'icon-delete.svg' : 'icon-delete-light.svg';
 
   return (
     <div className={`flex flex-col gap-2 ${theme === 'light' ? 'bg-keyboard-light' : 'bg-keyboard-dark'} py-[30px] px-[20px] rounded-lg`}>
@@ -26,10 +27,10 @@ const Keyboard: React.FC = () => {
           {row.map((key, keyIndex) => (
             <button
               key={keyIndex}
-              className={`h-[51px] ${key === 'Enter' || key === 'Delete' ? 'w-[71px]' : 'w-[44px]'} text-center rounded ${backgroundKey} ${colorKey}`}
+              className={`flex justify-center items-center h-[51px] ${key === 'Enter' || key === 'Delete' ? 'w-[71px]' : 'w-[44px]'} text-center rounded ${backgroundKey} ${colorKey}`}
               onClick={() => onKeyPress(key)}
             >
-              {key}
+              {key === 'Delete' ? <img src={svgKey} alt="Delete" /> : key}
             </button>
           ))}
         </div>
