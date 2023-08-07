@@ -1,5 +1,4 @@
 import React from 'react';
-import { BoardProps } from '../interfaces/BoardProps';
 import BoardRow from './BoardRow';
 
 const Board: React.FC = () => {

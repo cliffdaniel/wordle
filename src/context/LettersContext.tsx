@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { completeWord, setGameOver, takeWord, addWord, currentWord } from '../redux/wordsSlice';
 import { setIntervalId, clearIntervalId } from '../redux/intervalSlice';
 import { useModalStatistics } from './ModalStatisticsContext';
-import getRandomFiveLetterWord from '../hooks/useRandomFiveLetterWord';
+import getRandomFiveLetterWord from '../utils/getRandomFiveLetterWord';
 import { GAME_INTERVAL } from '../constants/constants';
 
 interface LettersContextType {

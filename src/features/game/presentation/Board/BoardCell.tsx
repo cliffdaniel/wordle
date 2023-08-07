@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTheme } from '../../../../context/ThemeContext';
-import { useSelector } from 'react-redux';
 
 interface BoardCellProps {
   row: number;
@@ -8,11 +7,8 @@ interface BoardCellProps {
   letter: { letter: string; status: string; };
 }
 
-type CellStatus = 'success' | 'warning' | 'not-found' | '';
-
 const BoardCell: React.FC<BoardCellProps> = ({ row, col, letter }) => {
   const { theme } = useTheme();
-  const words = useSelector((state: any) => state.words.words);
 
   let backgroundColor;
   if (letter.status === 'success') {
