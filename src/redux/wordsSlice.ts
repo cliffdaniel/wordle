@@ -1,16 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface Word {
-  word: string;
-  status: 'complete' | 'incomplete';
-}
-
-interface WordsState {
-  words: { [word: string]: 'complete' | 'incomplete' };
-  taken: boolean;
-  current: string;
-  gameOver: boolean;
-}
+import { WordsState } from '../interfaces/words';
 
 const initialState: WordsState = {
   words: {},

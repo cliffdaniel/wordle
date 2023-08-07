@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface LettersState {
-  letters: string[][];
-}
+import { LettersState } from '../interfaces/letters';
 
 const initialState: LettersState = {
   letters: Array(5).fill(Array(5).fill('')),

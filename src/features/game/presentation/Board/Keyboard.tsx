@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../../../context/ThemeContext';
-import { useLetters } from '../../../../context/LettersContext';
+import { useLetters } from '../../../../hooks/useLetters';
 
 const Keyboard: React.FC = () => {
   const { theme } = useTheme();

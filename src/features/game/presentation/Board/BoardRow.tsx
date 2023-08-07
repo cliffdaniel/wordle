@@ -1,6 +1,6 @@
 import React from 'react';
 import BoardCell from './BoardCell';
-import { useLetters } from '../../../../context/LettersContext';
+import { useLetters } from '../../../../hooks/useLetters';
 
 interface BoardRowProps {
   row: number;

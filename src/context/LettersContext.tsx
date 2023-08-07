@@ -1,55 +1,19 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { completeWord, setGameOver, takeWord, addWord, currentWord } from '../redux/wordsSlice';
 import { setIntervalId, clearIntervalId } from '../redux/intervalSlice';
 import { useModalStatistics } from './ModalStatisticsContext';
 import getRandomFiveLetterWord from '../utils/getRandomFiveLetterWord';
+import removeAccents from '../utils/stringUtils';
+import initializeLocalStorageValues from '../utils/localStorageUtils';
 import { GAME_INTERVAL } from '../constants/constants';
-
-interface LettersContextType {
-  letters: { letter: string; status: string; }[][];
-  addLetter: (letter: string) => void;
-  setInitializeGame: () => void;
-}
-
-const LettersContext = createContext<LettersContextType | undefined>(undefined);
-
-export const useLetters = () => {
-  const context = useContext(LettersContext);
-  if (!context) {
-    throw new Error('useLetters must be used within a LettersProvider');
-  }
-  return context;
-};
-
-function removeAccents(str: string): string {
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/([aeio])\1+/g, '$1')
-    .replace(/ñ/g, 'ñ');
-}
-
-function initializeLocalStorageValues() {
-  const storedColRef = localStorage.getItem('colRef');
-  const storedRowRef = localStorage.getItem('rowRef');
-  const storedLetters = localStorage.getItem('lettersState');
-  const initialLetters = Array.from({ length: 5 }, () => Array(5).fill(''));
-  const initialLettersState = storedLetters ? JSON.parse(storedLetters) : initialLetters;
-  const initialColRef = storedColRef ? parseInt(storedColRef) : 0;
-  const initialRowRef = storedRowRef ? parseInt(storedRowRef) : 0;
-
-  return {
-    initialLettersState,
-    initialColRef,
-    initialRowRef,
-  };
-}
+import { WordsState, IntervalState } from '../interfaces'
+import { LettersContext, LettersContextType } from '../hooks/useLetters';
 
 export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
   const { setShowStatisticsModal } = useModalStatistics();
-  const intervalId = useSelector((state: any) => state.interval?.intervalId);
+  const intervalId = useSelector((state: { interval: IntervalState }) => state.interval.intervalId);
 
   const { initialLettersState, initialColRef, initialRowRef } = initializeLocalStorageValues();
   const [letters, setLetters] = useState<{ letter: string; status: string; }[][]>(initialLettersState);
@@ -57,10 +21,11 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const colRef = useRef(initialColRef);
   const rowRef = useRef(initialRowRef);
 
-  const existingWords = useSelector((state: any) => state.words.words);
-  const currentWordSelected = useSelector((state: any) => state.words.current);
+  const wordTaken = useSelector((state: { words: WordsState }) => state.words.taken);
+  const existingWords = useSelector((state: { words: WordsState }) => state.words.words);
+  const currentWordSelected = useSelector((state: { words: WordsState }) => state.words.current);
   const currentWordSelectedUpper = removeAccents(currentWordSelected.toUpperCase());
-  const gameOver = useSelector((state: any) => state.words.gameOver);
+  const gameOver = useSelector((state: { words: WordsState }) => state.words.gameOver);
 
   const addLetterHandler = (letter: string) => {
     if (gameOver) {
@@ -138,7 +103,8 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }
 
   const initializeGame = async () => {
-    if (!gameOver) {
+    if (!gameOver && !wordTaken) {
+      console.log('initializeGame')
       let randomWord = await getRandomFiveLetterWord();
 
       while (existingWords[randomWord]) {
@@ -182,8 +148,14 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     initializeGame();
   }, [gameOver]);
 
+  const contextValue: LettersContextType = {
+    letters,
+    addLetter: addLetterHandler,
+    setInitializeGame: initializeGame
+  }
+
   return (
-    <LettersContext.Provider value={{ letters, addLetter: addLetterHandler, setInitializeGame: initializeGame }}>
+    <LettersContext.Provider value={contextValue}>
       {children}
     </LettersContext.Provider>
   );

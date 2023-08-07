@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface IntervalState {
-  intervalId: number | null;
-  intervalStart: number;
-}
+import { IntervalState } from '../interfaces/interval'
 
 const initialState: IntervalState = {
   intervalId: null,

@@ -7,7 +7,7 @@ import store, { persistor } from './redux/store.ts';
 import { ThemeProvider } from './context/ThemeContext';
 import { ModalDetailsProvider } from './context/ModalDetailsContext';
 import { ModalStatisticsProvider } from './context/ModalStatisticsContext';
-import { LettersProvider } from './context/LettersContext';
+import { LettersProvider } from './context/LettersContext.tsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

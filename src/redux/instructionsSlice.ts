@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { InstructionsState } from '../interfaces/instructions';
+
+const initialState: InstructionsState = {
+  shown: false,
+};
 
 const instructionsSlice = createSlice({
   name: 'instructions',
-  initialState: {
-    shown: false,
-  },
+  initialState,
   reducers: {
     setInstructionsShown: (state) => {
       state.shown = true;

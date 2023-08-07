@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { useModalDetails } from '../context/ModalDetailsContext';
+import { useModalDetails } from '../hooks/useModalDetails';
 import { useModalStatistics } from '../context/ModalStatisticsContext';
 
 import { APP_TITLE } from '../constants/titles';

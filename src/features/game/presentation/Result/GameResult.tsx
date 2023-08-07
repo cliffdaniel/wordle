@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setGameOver, takeWord } from '../../../../redux/wordsSlice';
+import { WordsState } from '../../../../interfaces/words';
 import { useTheme } from '../../../../context/ThemeContext';
-import { useLetters } from '../../../../context/LettersContext';
+import { useLetters } from '../../../../hooks/useLetters';
 import Countdown from 'react-countdown';
 import {
   STATISTICS_TITLE,
@@ -34,13 +35,13 @@ const GameResult: React.FC<GameResultProps> = ({ onClose }) => {
   const intervalStartFromLocalStorage = localStorage.getItem('intervalStart');
   const intervalStart = intervalStartFromLocalStorage ? JSON.parse(intervalStartFromLocalStorage) : Date.now();
 
-  const words = useSelector((state: any) => state.words.words);
-  const currentWord = useSelector((state: any) => state.words.current);
+  const words = useSelector((state: { words: WordsState }) => state.words.words);
+  const currentWord = useSelector((state: { words: WordsState }) => state.words.current);
   const countGames = Object.entries(words).length
   const countCompletedWords = Object.values(words).filter(status => status === 'complete').length;
   const currentWordStatus = words[currentWord] || 'incomplete';
 
-  const gameOver = useSelector((state: any) => state.words.gameOver);
+  const gameOver = useSelector((state: { words: WordsState }) => state.words.gameOver);
   const remainingTimeInSeconds = calculateTimeRemaining(intervalStart);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const GameResult: React.FC<GameResultProps> = ({ onClose }) => {
         clearInterval(intervalId);
       };
     }
-  }, [dispatch, gameOver, intervalStart]);
+  }, [dispatch, gameOver, intervalStart, setInitializeGame]);
 
   return (
     <div className={`w-[546px] text-center py-[50px] px-[70px] ${textColor}`}>
