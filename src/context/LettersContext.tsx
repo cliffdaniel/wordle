@@ -33,15 +33,24 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const dispatch = useDispatch();
   const { setShowStatisticsModal } = useModalStatistics();
   const intervalId = useSelector((state: any) => state.interval?.intervalId);
+
+  const storedColRef = localStorage.getItem('colRef');
+  const storedRowRef = localStorage.getItem('rowRef');
+  const storedLetters = localStorage.getItem('lettersState');
   const initialLetters = Array.from({ length: 5 }, () => Array(5).fill(''));
-  const [letters, setLetters] = useState<{ letter: string; status: string; }[][]>(initialLetters);
+  const initialLettersState = storedLetters ? JSON.parse(storedLetters) : initialLetters;
+  const [letters, setLetters] = useState<{ letter: string; status: string; }[][]>(initialLettersState);
+
   const taken = useSelector((state: any) => state.words.taken);
   const currentWordSelected = useSelector((state: any) => state.words.current);
   const currentWordSelectedUpper = removeAccents(currentWordSelected.toUpperCase());
   const gameOver = useSelector((state: any) => state.words.gameOver);
 
-  const colRef = useRef(0);
-  const rowRef = useRef(0);
+  const initialColRef = storedColRef ? parseInt(storedColRef) : 0;
+  const initialRowRef = storedRowRef ? parseInt(storedRowRef) : 0;
+
+  const colRef = useRef(initialColRef);
+  const rowRef = useRef(initialRowRef);
 
   const addLetterHandler = (letter: string) => {
     if (gameOver) {
@@ -62,6 +71,10 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (rowRef.current != 5) {
         colRef.current = 0
       }
+
+      localStorage.setItem('lettersState', JSON.stringify(letters));
+      localStorage.setItem('colRef', colRef.current.toString());
+      localStorage.setItem('rowRef', rowRef.current.toString());
     }
 
     if (letter === 'Delete') {
@@ -114,6 +127,12 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
       dispatch(currentWord(randomWord));
       dispatch(takeWord(true));
       dispatch(setIntervalId(true));
+
+      localStorage.removeItem('lettersState');
+      localStorage.removeItem('colRef');
+      localStorage.removeItem('rowRef');
+
+      setShowStatisticsModal(false);
     }
   };
 
