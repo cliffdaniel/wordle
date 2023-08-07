@@ -56,6 +56,7 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const colRef = useRef(initialColRef);
   const rowRef = useRef(initialRowRef);
 
+  const existingWords = useSelector((state: any) => state.words.words);
   const currentWordSelected = useSelector((state: any) => state.words.current);
   const currentWordSelectedUpper = removeAccents(currentWordSelected.toUpperCase());
   const gameOver = useSelector((state: any) => state.words.gameOver);
@@ -137,7 +138,12 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const initializeGame = async () => {
     if (!gameOver) {
-      const randomWord = await getRandomFiveLetterWord();
+      let randomWord = await getRandomFiveLetterWord();
+
+      while (existingWords[randomWord]) {
+        randomWord = await getRandomFiveLetterWord();
+      }
+
       dispatch(addWord(randomWord));
       dispatch(currentWord(randomWord));
       dispatch(takeWord(true));
