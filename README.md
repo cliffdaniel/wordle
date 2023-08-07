@@ -2,13 +2,16 @@
 
 Bienvenido a Wordle App, una emocionante aplicación de juego de palabras desarrollada con React y Redux.
 
+## Demo
+
+Puedes probar la demo de la aplicación en vivo aquí: [Demo de Wordle](https://wordle-daniel.vercel.app/)
+
 ## Instalación
 
 Para comenzar, sigue estos pasos:
 
 1. Clona este repositorio en tu máquina local:
 
-```bash
 git clone https://github.com/tu-usuario/wordle-app.git
 
 2. Navega al directorio del proyecto
