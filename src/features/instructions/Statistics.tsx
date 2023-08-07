@@ -1,5 +1,5 @@
 import React from 'react';
-import { useModalStatistics } from '../../context/ModalStatisticsContext';
+import { useModalStatistics } from '../../hooks/useModalStatistics';
 import GameResult from '../game/presentation/Result/GameResult';
 import Modal from '../../components/Modal';
 

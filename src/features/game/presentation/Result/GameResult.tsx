@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setGameOver, takeWord } from '../../../../redux/wordsSlice';
 import { WordsState } from '../../../../interfaces/words';
-import { useTheme } from '../../../../context/ThemeContext';
+import { useTheme } from '../../../../hooks/useTheme';
 import { useLetters } from '../../../../hooks/useLetters';
 import Countdown from 'react-countdown';
 import {

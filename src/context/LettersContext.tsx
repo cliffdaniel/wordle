@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { completeWord, setGameOver, takeWord, addWord, currentWord } from '../redux/wordsSlice';
 import { setIntervalId, clearIntervalId } from '../redux/intervalSlice';
-import { useModalStatistics } from './ModalStatisticsContext';
+import { useModalStatistics } from '../hooks/useModalStatistics';
 import getRandomFiveLetterWord from '../utils/getRandomFiveLetterWord';
 import removeAccents from '../utils/stringUtils';
 import initializeLocalStorageValues from '../utils/localStorageUtils';
@@ -104,7 +104,6 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const initializeGame = async () => {
     if (!gameOver && !wordTaken) {
-      console.log('initializeGame')
       let randomWord = await getRandomFiveLetterWord();
 
       while (existingWords[randomWord]) {

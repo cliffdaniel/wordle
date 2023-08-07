@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 import { useModalDetails } from '../hooks/useModalDetails';
-import { useModalStatistics } from '../context/ModalStatisticsContext';
+import { useModalStatistics } from '../hooks/useModalStatistics';
 
 import { APP_TITLE } from '../constants/titles';
 import ThemeSwitch from './ThemeSwitch';

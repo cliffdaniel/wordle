@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../../../context/ThemeContext';
+import { useTheme } from '../../../../hooks/useTheme';
 import {
   HOW_TO_PLAY,
   INSTRUCTION_PARAGRAPH_1,
