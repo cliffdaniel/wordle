@@ -29,28 +29,36 @@ function removeAccents(str: string): string {
     .replace(/([aeio])\1+/g, '$1');
 }
 
-export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const dispatch = useDispatch();
-  const { setShowStatisticsModal } = useModalStatistics();
-  const intervalId = useSelector((state: any) => state.interval?.intervalId);
-
+function initializeLocalStorageValues() {
   const storedColRef = localStorage.getItem('colRef');
   const storedRowRef = localStorage.getItem('rowRef');
   const storedLetters = localStorage.getItem('lettersState');
   const initialLetters = Array.from({ length: 5 }, () => Array(5).fill(''));
   const initialLettersState = storedLetters ? JSON.parse(storedLetters) : initialLetters;
-  const [letters, setLetters] = useState<{ letter: string; status: string; }[][]>(initialLettersState);
-
-  const taken = useSelector((state: any) => state.words.taken);
-  const currentWordSelected = useSelector((state: any) => state.words.current);
-  const currentWordSelectedUpper = removeAccents(currentWordSelected.toUpperCase());
-  const gameOver = useSelector((state: any) => state.words.gameOver);
-
   const initialColRef = storedColRef ? parseInt(storedColRef) : 0;
   const initialRowRef = storedRowRef ? parseInt(storedRowRef) : 0;
 
+  return {
+    initialLettersState,
+    initialColRef,
+    initialRowRef,
+  };
+}
+
+export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const dispatch = useDispatch();
+  const { setShowStatisticsModal } = useModalStatistics();
+  const intervalId = useSelector((state: any) => state.interval?.intervalId);
+
+  const { initialLettersState, initialColRef, initialRowRef } = initializeLocalStorageValues();
+  const [letters, setLetters] = useState<{ letter: string; status: string; }[][]>(initialLettersState);
+
   const colRef = useRef(initialColRef);
   const rowRef = useRef(initialRowRef);
+
+  const currentWordSelected = useSelector((state: any) => state.words.current);
+  const currentWordSelectedUpper = removeAccents(currentWordSelected.toUpperCase());
+  const gameOver = useSelector((state: any) => state.words.gameOver);
 
   const addLetterHandler = (letter: string) => {
     if (gameOver) {
@@ -120,8 +128,15 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setLetters(newLetters);
   };
 
+  const setInitialLetters = () => {
+    const { initialLettersState } = initializeLocalStorageValues();
+    colRef.current = 0
+    rowRef.current = 0
+    setLetters(initialLettersState)
+  }
+
   const initializeGame = async () => {
-    if (!gameOver && !taken) {
+    if (!gameOver) {
       const randomWord = await getRandomFiveLetterWord();
       dispatch(addWord(randomWord));
       dispatch(currentWord(randomWord));
@@ -133,6 +148,7 @@ export const LettersProvider: React.FC<{ children: React.ReactNode }> = ({ child
       localStorage.removeItem('rowRef');
 
       setShowStatisticsModal(false);
+      setInitialLetters();
     }
   };
 
